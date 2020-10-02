@@ -1,40 +1,42 @@
 package gskim.calendar;
 
-import java.util.Scanner;
-
 public class Calendar {
-	public static void main(String[] args) {		
-		System.out.println("반복 횟수를 입력하세요 : ");
-		Scanner scanner = new Scanner(System.in);
-		int repeat = scanner.nextInt();
+	private static final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	private static final int[] LEAP_MAX_DAYS = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	
+	public boolean isLeapYear(int year){
+		if(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)){
+			return true;
+		}else{
+			return false;
+		}		
+	}
+	
+	public int getMaxDaysOfMonth(int year, int month){
+		if(isLeapYear(year)){
+			return LEAP_MAX_DAYS[month-1];
+		}else{
+			return MAX_DAYS[month-1];
+		}				
+	}
+	
+	public void printCalendar(int year, int month, int day){
+		System.out.printf("    <<%4d년%3d월>>\n", year, month);
+		System.out.println(" SU MO TU WE TH FR SA");
+		System.out.println("---------------------");
 		
-		int[] month = new int[repeat];
-		for(int i=0; i<repeat; i++){
-			System.out.println((i+1)+"번째 달을 입력하세요 : ");
-			month[i] = scanner.nextInt();
+		int maxDay = getMaxDaysOfMonth(year, month);
+		
+		for(int i=0; i<day; i++){
+			System.out.print("   ");
 		}
 		
-		int[] monthDay = new int[3];
-		monthDay[0] = 31;
-		monthDay[1] = 30;
-		monthDay[2] = 28;
-		
-		for(int j=0; j<repeat; j++){
-			switch(month[j]){
-			case 1 : case 3 : case 5 : case 7 : case 8 : case 10 : case 12 :
-				System.out.println(month[j]+"월은 "+ monthDay[0] +"일까지 있습니다.");
-				break;
-			case 4 : case 6 : case 9 : case 11 : 
-				System.out.println(month[j]+"월은 "+ monthDay[1] +"일까지 있습니다.");
-				break;
-			case 2 :
-				System.out.println(month[j]+"월은 "+ monthDay[2] +"일까지 있습니다.");
-				break;
-			default :
-				System.out.println("1월부터 12월 사이의 숫자를 입력하세요.");
-				break;
-			}		
-		}
-		scanner.close();
+		for(int i=1; i<=maxDay; i++){
+			System.out.printf("%3d", i);
+			if((i+day) % 7 == 0){
+				System.out.println();
+			}
+		}		
+		System.out.println();
 	}
 }
